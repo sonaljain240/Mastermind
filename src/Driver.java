@@ -3,9 +3,13 @@
  */
 public class Driver {
 	public static void main(String[] args) {
-		Code a = new Code(4, "ROBO");
-		Code b = new Code(4, "OGOO");
-		System.out.println(a.checkGuess(b).toString());
+		try {
+			Code a = new Code(4, "ROBO");
+			Code b = new Code(4, "OGOO");
+			System.out.println(a.checkGuess(b).toString());
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
 
 	}
 }
