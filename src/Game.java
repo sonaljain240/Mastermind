@@ -160,14 +160,17 @@ public class Game{
 	 */
 	public void displayHistory() {
 		int counter = 0;
+		String temp = "";
 		for(Code c: history) {
 			counter += 1;
-			HashMap<String, Integer> result = key.checkGuess(code);
-			JOptionPane.showMessageDialog(null, counter + " " + c.toString() + ": " + result.get(Code.BLACK_PEG) + " black peg(s)" + " and " + result.get(Code.WHITE_PEG) + " white peg(s)");
+			HashMap<String, Integer> result = key.checkGuess(c);
+			temp +=  counter + ". " + c.toString() + ": " + result.get(Code.BLACK_PEG) + " black peg(s)" + " and " + result.get(Code.WHITE_PEG) + " white peg(s)\n";
 		}
 		if(counter == 0)
 		{
 			JOptionPane.showMessageDialog(null, "No previous moves.");
+		} else {
+			JOptionPane.showMessageDialog(null, temp);
 		}
 
 		
