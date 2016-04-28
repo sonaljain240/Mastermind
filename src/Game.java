@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Game{
 	private Code code;
@@ -51,53 +54,56 @@ public class Game{
 		history.clear();
 		
 		// gets size of code user wants
-		int size;
-		do {
-			try {
-				size = 	Integer.parseInt(JOptionPane.showInputDialog(null,"How many pegs would you like in your code?\nPlease pick a number between 4 and 8." ,JOptionPane.PLAIN_MESSAGE));
-			} catch (Exception e) {
-				keyboard.next();
-				size = 0;
-			}
-		} while(size < 4 || size > 8);
-
+		int size = 0;
+		try{
+			String[] choices = { "4", "5", "6", "7", "8"};
+			size = Integer.parseInt((String) JOptionPane.showInputDialog(null, "How many pegs would you like in your code?",
+				        null, JOptionPane.QUESTION_MESSAGE, null, choices, // Array of choices
+				        choices[0])); // Initial choice
+			
+		}
+		catch(Exception e){
+			System.exit(0);
+		}
 		// gets number of colors user wants
-		int numColors;
-		do {
-			try {
-				numColors = Integer.parseInt(JOptionPane.showInputDialog(null,"How many colors would you like?\nPlease pick a number between 6 and 8.",JOptionPane.PLAIN_MESSAGE));
-			} catch (Exception e) {
-				keyboard.next();
-				numColors = 0;
-			}
-		} while(numColors < 6 || numColors > 8);
+		int numColors = 0;
+		try{
+			String[] choices = {"6", "7", "8"};
+			numColors = Integer.parseInt((String) JOptionPane.showInputDialog(null, "How many colors would you like?",
+				        null, JOptionPane.QUESTION_MESSAGE, null, choices, // Array of choices
+				        choices[0])); // Initial choice
+		}
+		catch(Exception e){
+			System.exit(0);
+		}
 
 		// gets number of chances user wants
-		String mode;
-		do {
-			try {
-				mode = JOptionPane.showInputDialog(null,"Which mode would you like to play? Easy (16 tries), Medium (12 tries), or Hard (8 tries)\nPlease enter either E, M, or H.",JOptionPane.PLAIN_MESSAGE);
-				mode = mode.toLowerCase();
-			} catch (Exception e) {
-				mode = "";
-			}
-		} while (!mode.equals("e") && !mode.equals("m") && !mode.equals("h"));
+		String mode = "";
+		try{
+			String[] choices = { "Easy (16 tries)", "Medium (12 tries)", "Hard (8 tries)"};
+			mode = (String) JOptionPane.showInputDialog(null, "What difficulty would you like to play?",
+				        null, JOptionPane.QUESTION_MESSAGE, null, choices, // Array of choices
+				        choices[1]); // Initial choice
+		}
+		catch(Exception e){
+			System.exit(0);
+		}
 		int numGuesses = 0;
-		if (mode.equals("e")) numGuesses = 16;
-		else if (mode.equals("m")) numGuesses = 12;
-		else if (mode.equals("h")) numGuesses = 8;
+		if (mode.equals("Easy (16 tries)")) numGuesses = 16;
+		else if (mode.equals("Medium (12 tries)")) numGuesses = 12;
+		else if (mode.equals("Hard (8 tries)")) numGuesses = 8;
 
 		// starts game or stops game
-		String start;
-		do {
-			try {
-				start = JOptionPane.showInputDialog(null,"You have " + numGuesses + " guesses to figure out the secret code or you lose the game.  Are you ready to play? (Y/N):", JOptionPane.PLAIN_MESSAGE);
-				start = start.toLowerCase();
-			} catch (Exception e) {
-				start = "";
-			}
-		} while (!start.equals("n") && !start.equals("y"));
-		if(start.equals("n")) System.exit(0);
+		int start = 0;
+		try{
+			start =  JOptionPane.showOptionDialog(null, "You have " + numGuesses + " guesses to figure out the secret code or you lose the game.  Are you ready to play?",
+				        null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null); // Initial choice
+		}
+		catch(Exception e){
+			System.exit(0);
+		}
+	
+		if(start == JOptionPane.NO_OPTION) System.exit(0);
 
 		// generates password
 		JOptionPane.showMessageDialog(null,"Generating secret code...", null, JOptionPane.PLAIN_MESSAGE);
@@ -117,13 +123,25 @@ public class Game{
 			while(true) {
 				try {
 					String guess = "";
-					guess = JOptionPane.showInputDialog(null,"What is your next guess?\n" +
-							  "Type in the characters for your guess and press enter.\n" +
-							  "Type \"history\" to see your previous guesses.\n" +
-							  "Enter guess: ", JOptionPane.PLAIN_MESSAGE);
-					if(guess.equals("history")) {
+					Object[] options1 = { "OK", "History", "Cancel" };
+
+					JPanel panel = new JPanel();
+					panel.add(new JLabel("Enter guess: "));
+					JTextField textField = new JTextField(10);
+					panel.add(textField);
+
+					int res = JOptionPane.showOptionDialog(null, panel, "What is your next guess?",
+	                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+	                	null, options1, JOptionPane.YES_OPTION);
+					if (res == JOptionPane.YES_OPTION){
+						guess = textField.getText();
+					} 
+					else if(res == JOptionPane.NO_OPTION){
 						displayHistory();
 						continue;
+					}
+					else{
+						System.exit(0);
 					}
 					Code code = new Code(size, numColors, guess);
 					HashMap<String, Integer> result = key.checkGuess(code);
@@ -149,10 +167,17 @@ public class Game{
 		} else {
 			JOptionPane.showMessageDialog(null, "You lose... :(");
 		}
-
-		String guess = JOptionPane.showInputDialog(null,"Are you ready for another game (Y/N): ", JOptionPane.PLAIN_MESSAGE);
-		if(guess.toLowerCase().equals("y"))
-			start();
+		int s = 0;
+		try{
+			s =  JOptionPane.showOptionDialog(null, "You have " + numGuesses + " guesses to figure out the secret code or you lose the game.  Are you ready to play?",
+				        null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null); // Initial choice
+		}
+		catch(Exception e){
+			System.exit(0);
+		}
+			if(s == JOptionPane.YES_OPTION){
+				start();
+			}
 	}
 
 	/**
