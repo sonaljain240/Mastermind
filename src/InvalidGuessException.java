@@ -1,6 +1,10 @@
 /**
- * Created by Ali on 4/26/2016.
+ * Ali Tejani amt3639
+ * Sonal Jain sj23277
+ * Thursday 9:30-11
+ * Mastermind
  */
+
 public class InvalidGuessException extends Exception {
 	private static final long serialVersionUID = 1L;
 

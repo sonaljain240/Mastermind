@@ -1,3 +1,10 @@
+/**
+ * Ali Tejani amt3639
+ * Sonal Jain sj23277
+ * Thursday 9:30-11
+ * Mastermind
+ */
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;

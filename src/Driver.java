@@ -1,8 +1,10 @@
-import java.util.Scanner;
-
 /**
- * Created by Ali on 4/26/2016.
+ * Ali Tejani amt3639
+ * Sonal Jain sj23277
+ * Thursday 9:30-11
+ * Mastermind
  */
+
 public class Driver {
 	public static void main(String[] args) {
 		Game game = new Game(true);
